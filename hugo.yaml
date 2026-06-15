@@ -109,6 +109,7 @@ params:
     minMatchCharLength: 0
     limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
     keys: ["title", "permalink", "summary", "content"]
+
 menu:
   main:
     - identifier: categories
@@ -123,8 +124,10 @@ menu:
       name: example.org
       url: https://example.org
       weight: 30
+
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
+
 markup:
   highlight:
     noClasses: false
@@ -133,3 +136,7 @@ markup:
     # guessSyntax: true
     # lineNos: true
     # style: monokai
+
+caches:
+  images:
+    dir: :cacheDir/images
