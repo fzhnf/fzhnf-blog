@@ -1,2 +1,64 @@
 [tools]
 "github:getzola/zola" = "0.22.1"
+
+[tasks.post]
+description = "Scaffold a draft post: mise post \"Title\""
+usage = 'arg "<title>"'
+run = '''
+[ -n "$usage_title" ] || { echo "usage: mise post \"Title\""; exit 1; }
+slug=$(echo "$usage_title" | tr "[:upper:]" "[:lower:]" | sed -E "s/[^a-z0-9]+/-/g; s/^-+|-+$//")
+d="content/blog/$(date +%F)-$slug"
+mkdir -p "$d"
+cat > "$d/index.md" <<EOF
++++
+title = "$usage_title"
+description = ""
+authors = ["Tima Gutmensch"]
+date = $(date +%F)
+draft = true
+
+[taxonomies]
+tags = []
+categories = ["uncategorized"]
+
+[extra]
+banner = "banner.webp"
++++
+EOF
+echo "$d/index.md"
+'''
+
+[tasks.publish]
+description = "Flip a draft to published: mise publish <slug>"
+usage = 'arg "<slug>"'
+run = '''
+f=$(ls content/blog/*"$usage_slug"*/index.md 2>/dev/null | head -1)
+[ -n "$f" ] || { echo "no post matching '$usage_slug'"; exit 1; }
+sed -i "s/^draft = true/draft = false/" "$f"
+echo "published: $f"
+'''
+
+[tasks.check]
+description = "Check internal links and highlighting"
+run = "zola check"
+
+[tasks.banner]
+description = "Convert an exported image to a post banner: mise banner <img> [slug]"
+usage = '''
+arg "<image>"
+arg "[slug]"
+'''
+run = '''
+[ -f "$usage_image" ] || { echo "usage: mise banner <image> [slug]"; exit 1; }
+if [ -n "$usage_slug" ]; then d=$(ls -d content/blog/*"$usage_slug"* 2>/dev/null | head -1); else d=$(ls -dt content/blog/* | head -1); fi
+[ -d "$d" ] || { echo "no matching post dir"; exit 1; }
+if command -v magick >/dev/null; then
+  magick "$usage_image" -resize "1280x1280>" -quality 80 "$d/banner.webp"
+elif command -v ffmpeg >/dev/null; then
+  # ponytail: ffmpeg fallback since ImageMagick isn't installed here; install magick for nicer webp control
+  ffmpeg -y -loglevel error -i "$usage_image" -vf "scale='min(1280,iw)':-2" -q:v 80 "$d/banner.webp"
+else
+  echo "need ImageMagick (magick) or ffmpeg"; exit 1
+fi
+echo "$d/banner.webp"
+'''
