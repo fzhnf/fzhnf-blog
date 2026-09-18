@@ -15,7 +15,7 @@ banner = "banner.webp"
 
 I made a [vtuber-style logo](/logo.svg) for this blog.
 
-![fzhnf's vtuber-style logo](/logo.svg)
+![Tima Gutmensch's vtuber-style logo](/logo.svg)
 
 ## The Recipe
 

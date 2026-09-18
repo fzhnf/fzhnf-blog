@@ -65,7 +65,7 @@ categories = [
 # presets by creating an "accent_presets.toml" file under the "./data/"
 # directory with custom preset names and colors. Use the one located in Ametrine
 # as a reference.
-accent_color = ["purple", "orange"]
+accent_color = ["purple", "hsl(197deg 53% 34%)"]
 
 # Additional CSS styles; expects them to be in the "./static/" directory.
 # If you are using Sass these will be generated there automatically.
@@ -240,10 +240,10 @@ webrings = [
 # [1]: https://ametrine.daudix.one/demo/#audio
 note = "<small>Don't die trying, try *dying*. /j</small>"
 
-[extra.footer.ru]
+[extra.footer.id]
 # Translations for the [extra.footer]. Available variables are:
 # - copyright
-copyright = "© Laboratorium Penelitian Alam ~~Portal~~, 1972-$YEAR"
+# copyright = "© Laboratorium Penelitian Alam ~~Portal~~, 1972-$YEAR"
 
 
 [extra.fediverse]
